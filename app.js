@@ -5,6 +5,10 @@ if (process.env.NODE_ENV !== 'production') {
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
+const passport = require('passport');
+const session = require('express-session');
+const flash = require('connect-flash');
+
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const lessMiddleware = require('less-middleware');
@@ -17,7 +21,8 @@ const db = mongoose.connection;
 
 mongoose.connect(`${process.env.DATABASE_URL}`, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useCreateIndex: true
 });
 
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -31,6 +36,22 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
+
+app.use(
+  session({
+    secret: process.env.SECRET_SESSION,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7
+    },
+    resave: false,
+    saveUninitialized: false
+  })
+);
+
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(lessMiddleware(path.join(__dirname, 'public')));
