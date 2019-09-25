@@ -4,32 +4,12 @@ const router = express.Router();
 const passport = require('passport');
 
 const signup = require('./controllers/signup.controller');
-const { createVote } = require('./controllers/new.controller');
+const votingController = require('./controllers/voting.controller');
 const authorization = require('./middlewares/authorization');
-const User = require('../models/User');
-const Vote = require('../models/VotingElement');
 
 authorization.verifyUserData(passport);
 
-router.get('/', authorization.isAuthenticated, async (req, res, next) => {
-  const voteList = await Vote.find();
-  const voteInformation = await Promise.all(
-    voteList.map(async vote => {
-      const createUser = await User.findOne({ _id: vote.host });
-      const voteDoc = JSON.parse(JSON.stringify(vote._doc));
-      const expiration = new Date(vote.expiration);
-      const now = new Date();
-      const inProgress = Boolean(expiration - now > 0);
-
-      voteDoc.host = createUser.name;
-      voteDoc.inProgress = inProgress;
-
-      return voteDoc;
-    })
-  );
-
-  res.render('main', { voteInformation, title: 'Voting Platform main page' });
-});
+router.get('/', authorization.isAuthenticated, votingController.getAll);
 
 router.get('/signup', (req, res, next) => {
   res.render('signup');
@@ -76,19 +56,14 @@ router.get('/logout', (req, res, next) => {
 router.get(
   '/votings',
   authorization.isAuthenticated,
-  async (req, res, next) => {
-    const voteList = await Vote.find();
-    res.render('myPage', { voteList });
-  }
+  votingController.getMyVote
 );
 
 router.get('/votings/new', authorization.isAuthenticated, (req, res, next) => {
   res.render('new');
 });
 
-router.post('/votings/new', createVote, (req, res, next) => {
-  res.render('success');
-});
+router.post('/votings/new', votingController.createVote);
 
 router.get('/votings/:id', (req, res, next) => {
   res.render('vote');

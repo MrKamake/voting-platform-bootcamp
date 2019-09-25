@@ -1,3 +1,21 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1><%= message %></h1>
+    <h2><%= error.status %></h2>
+    <div>투표 생성 실패!</div>
+    <a href="/" class="main-path">메인으로</a>
+    <div>5초 후 메인으로 이동합니다..</div>
+  </body>
+  <script>
+    setTimeout(() => {
+      window.location.replace('http://localhost:3000/');
+    }, 5000)();
+  </script>
+</html>

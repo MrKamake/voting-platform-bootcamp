@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    <title><%= title %></title>
   </head>
   <body>
     <h1><%= title %></h1>
@@ -17,4 +17,10 @@
     </a>
     <% }); %>
   </body>
+  <script>
+    const expiredVote = document.querySelectorAll('.vote-element-false');
+    expiredVote.forEach(vote => {
+      vote.removeAttribute('href');
+    });
+  </script>
 </html>
