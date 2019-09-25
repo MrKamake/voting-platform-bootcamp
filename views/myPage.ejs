@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>My Page</title>
+  </head>
+  <body>
+    <% voteList.forEach(vote => { %>
+    <div class="vote-element">
+      <div class="vote-title"><%= vote.title %></div>
+      <!-- <div class="vote-host"><%= %></div> -->
+      <div class="vote-created_at"><%= vote.created_at %></div>
+      <!-- <div class="vote-expiration"><%= %></div>
+      <div class="vote-is-posible"><%= %></div>
+      <div class="vote-selection">
+        <div>선택 1</div>
+        <div>선택 2</div>
+      </div> -->
+    </div>
+    <% }); %>
+  </body>
+</html>

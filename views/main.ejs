@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <a href="/votings/new" class="create-vote">+투표</a>
+    <a href="/votings" class="my-vote">내 투표보기</a>
+    <% voteInformation.forEach(vote => { %>
+    <a href="/votings/:id" class="vote-element-<%= vote.inProgress %>">
+      <div class="vote-title"><%= vote.title %></div>
+      <div class="vote-host"><%= vote.host %></div>
+      <div class="vote-expiration"><%= vote.expiration%></div>
+      <div class="vote-created_at"><%= vote.created_at %></div>
+    </a>
+    <% }); %>
+  </body>
+</html>

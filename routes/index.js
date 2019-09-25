@@ -2,22 +2,40 @@ const express = require('express');
 const router = express.Router();
 
 const passport = require('passport');
-const session = require('express-session');
 
 const signup = require('./controllers/signup.controller');
-const { isAuthenticated, verifyUserData } = require('./middlewares/passport');
+const { createVote } = require('./controllers/new.controller');
+const authorization = require('./middlewares/authorization');
+const User = require('../models/User');
+const Vote = require('../models/VotingElement');
 
-verifyUserData(passport);
+authorization.verifyUserData(passport);
 
-router.get('/', isAuthenticated, (req, res, next) => {
-  res.render('index', { title: 'Express' });
+router.get('/', authorization.isAuthenticated, async (req, res, next) => {
+  const voteList = await Vote.find();
+  const voteInformation = await Promise.all(
+    voteList.map(async vote => {
+      const createUser = await User.findOne({ _id: vote.host });
+      const voteDoc = JSON.parse(JSON.stringify(vote._doc));
+      const expiration = new Date(vote.expiration);
+      const now = new Date();
+      const inProgress = Boolean(expiration - now > 0);
+
+      voteDoc.host = createUser.name;
+      voteDoc.inProgress = inProgress;
+
+      return voteDoc;
+    })
+  );
+
+  res.render('main', { voteInformation, title: 'Voting Platform main page' });
 });
 
 router.get('/signup', (req, res, next) => {
   res.render('signup');
 });
 
-router.post('/signup/create', signup.createUser);
+router.post('/signup', signup.createUser);
 
 router.get('/login', (req, res, next) => {
   res.render('login', { message: req.flash('error') });
@@ -31,12 +49,9 @@ router.post(
   }),
   (req, res, next) => {
     if (!req.body.remember_me) {
-      return next(err);
+      return next();
     }
-    res.cookie('remember_me', _, {
-      path: '/',
-      maxAge: 1000 * 60 * 60 * 24 * 7
-    });
+    res.cookie('remember_me', _, { path: '/', maxAge: 604800000 });
 
     return next();
   },
@@ -56,6 +71,27 @@ router.get('/logout', (req, res, next) => {
       }
     });
   }
+});
+
+router.get(
+  '/votings',
+  authorization.isAuthenticated,
+  async (req, res, next) => {
+    const voteList = await Vote.find();
+    res.render('myPage', { voteList });
+  }
+);
+
+router.get('/votings/new', authorization.isAuthenticated, (req, res, next) => {
+  res.render('new');
+});
+
+router.post('/votings/new', createVote, (req, res, next) => {
+  res.render('success');
+});
+
+router.get('/votings/:id', (req, res, next) => {
+  res.render('vote');
 });
 
 module.exports = router;

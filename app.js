@@ -12,7 +12,6 @@ const flash = require('connect-flash');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const lessMiddleware = require('less-middleware');
-const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
 
@@ -35,14 +34,10 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(logger('dev'));
-
 app.use(
   session({
     secret: process.env.SECRET_SESSION,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7
-    },
+    cookie: { maxAge: 604800000 },
     resave: false,
     saveUninitialized: false
   })
