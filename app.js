@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const createError = require('http-errors');
 const express = require('express');
+const methodOverride = require('method-override');
 const path = require('path');
 const passport = require('passport');
 const session = require('express-session');
@@ -32,6 +33,7 @@ db.once('open', () => {
 
 const app = express();
 
+// app.use(methodOverride('X-HTTP-Method-Override'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -50,6 +52,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
 app.use(cookieParser());
 app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));

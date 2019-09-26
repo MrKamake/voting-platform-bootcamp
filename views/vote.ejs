@@ -10,10 +10,13 @@
     <a href="/votings/new" class="create-vote">+투표</a>
     <a href="/votings" class="my-vote">내 투표보기</a>
     <div class="vote-element-<%= selectedVoteDoc.inProgress %>">
-      <% if (selectedVoteDoc.inProgress) { %>
-      <div>투표 진행중..</div>
-      <% } else { %>
-      <div>투표 완료..</div>
+      <% if(selectedVoteDoc.host === user) { %>
+      <form
+        method="POST"
+        action="/votings/<%= selectedVoteDoc._id %>?_method=DELETE"
+      >
+        <input type="submit" name="deleteButton" value="Delete" />
+      </form>
       <% } %>
       <div class="vote-title">title: <%= selectedVoteDoc.title %></div>
       <div class="vote-host"><%= selectedVoteDoc.host %></div>
@@ -21,18 +24,41 @@
       <div class="vote-created_at">
         생성일: <%= selectedVoteDoc.created_at %>
       </div>
-      <form action="/votings/<%= selectedVoteDoc._id %>" method="post">
-        <div class="vote-selection">
-          <% selectedVoteDoc.selections.forEach(selection => { %>
-          <input id="<%= selection.decription%>" type="radio" name="selection" value="<%= selection._id%>"/>
-          <label for="<%= selection.decription%>"><%= selection.description %></label>
-          <label for="<%= selection.decription%>"><%= selection.people.length %></label>
-          <% });%>
-        </div>
-        <div>
-          <input type="submit" value="Submit" />
-        </div>
-      </form>
     </div>
+    <% if (selectedVoteDoc.inProgress) { %>
+    <div>투표 진행중..</div>
+    <% if (!selectedVoteDoc.hasVoted) { %>
+    <form action="/votings/<%= selectedVoteDoc._id %>" method="POST">
+      <% selectedVoteDoc.selections.forEach(selection => { %>
+      <div class="vote-selection">
+        <input
+          id="<%= selection.decription%>"
+          type="radio"
+          name="selection"
+          value="<%= selection._id%>"
+        />
+        <label for="<%= selection.decription%>"
+          ><%= selection.description %></label
+        >
+        <% if(selectedVoteDoc.host === user) { %>
+        <span><%= selection.people.length %></span>
+        <% } %>
+      </div>
+      <% });%>
+      <input type="submit" value="Submit" />
+    </form>
+    <% } else { %>
+    <div>이미 투표하셨습니다.</div>
+    <% } %> <% } else { %>
+    <div>투표 종료</div>
+    <div>투표 결과</div>
+    <% if(selectedVoteDoc.descriptionOfResult.length > 1) { %>
+    <div>동점입니다.</div>
+    <% } %> <% selectedVoteDoc.descriptionOfResult.forEach(result => { %>
+    <div>
+      <span><%= result.title %></span>
+      <span><%= result.people.length%>명</span>
+    </div>
+    <%});%> <% } %>
   </body>
 </html>

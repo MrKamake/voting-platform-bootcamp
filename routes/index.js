@@ -63,7 +63,19 @@ router.get('/votings/new', authorization.isAuthenticated, (req, res, next) => {
   res.render('new');
 });
 
-router.post('/votings/new', authorization.isAuthenticated, votingController.createVote);
+router.post(
+  '/votings/new',
+  authorization.isAuthenticated,
+  votingController.createVote
+);
+
+router.get('/votings/success', (req, res, next) => {
+  res.render('success');
+});
+
+router.get('/votings/error', (req, res, next) => {
+  next(err);
+});
 
 router.get(
   '/votings/:id',
@@ -76,5 +88,7 @@ router.post(
   authorization.isAuthenticated,
   votingController.update
 );
+
+router.delete('/votings/:id', authorization.isAuthenticated, votingController.delete);
 
 module.exports = router;

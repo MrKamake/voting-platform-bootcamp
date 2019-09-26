@@ -47,16 +47,34 @@ exports.getMyVotes = async (req, res, next) => {
 exports.getOneVote = async (req, res, next) => {
   try {
     const selectedVote = await Vote.findOne({ _id: req.params.id });
+    const createUser = await User.findOne({ _id: selectedVote.host });
     const selectedVoteDoc = JSON.parse(JSON.stringify(selectedVote));
-    const createUser = await User.findOne({ _id: selectedVoteDoc.host });
     const expiration = new Date(selectedVoteDoc.expiration);
     const nowDate = new Date();
     const inProgress = Boolean(expiration - nowDate > 0);
+    let hasVoted = false;
+    let numberOfResult = 0;
+    selectedVoteDoc.selections.forEach(selection => {
+      console.log(selection);
+      numberOfResult = Math.max(selection.people.length, numberOfResult);
+      selection.people.forEach(person => {
+        if (person === String(req.user._id)) {
+          hasVoted = true;
+        }
+      });
+    });
 
+    const descriptionOfResult = selectedVoteDoc.selections.filter(selection => {
+      if (selection.people.length === numberOfResult) {
+        return selection;
+      }
+    });
     selectedVoteDoc.host = createUser.name;
     selectedVoteDoc.inProgress = inProgress;
+    selectedVoteDoc.descriptionOfResult = descriptionOfResult;
+    selectedVoteDoc.hasVoted = hasVoted;
 
-    res.render('vote', { selectedVoteDoc });
+    res.render('vote', { selectedVoteDoc, user: String(req.user._id) });
   } catch (err) {
     next(err);
   }
@@ -75,9 +93,9 @@ exports.createVote = async (req, res, next) => {
     };
     await new Vote(newVote).save();
 
-    res.render('success');
+    res.redirect('/votings/success');
   } catch (err) {
-    res.render('error');
+    res.redirect('/votings/error');
   }
 };
 
@@ -91,6 +109,16 @@ exports.update = async (req, res, next) => {
       }
     });
     await selectedVote.save();
+
+    res.redirect('/');
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.delete = async (req, res, next) => {
+  try {
+    await Vote.findByIdAndDelete(req.params.id);
 
     res.redirect('/');
   } catch (err) {

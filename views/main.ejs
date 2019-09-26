@@ -9,6 +9,7 @@
         src="https://freepngimg.com/download/vote/24870-3-vote-transparent-image.png"
       />
     </header>
+    <a href="/login" class="logout">logout</a>
     <a href="/votings/new" class="create-vote">+투표</a>
     <a href="/votings" class="my-vote">내 투표보기</a>
     <% if (voteInformation.length) { %>
@@ -27,10 +28,4 @@
     </div>
     <% } %>
   </body>
-  <script>
-    const expiredVote = document.querySelectorAll('.vote-element-false');
-    expiredVote.forEach(vote => {
-      vote.removeAttribute('href');
-    });
-  </script>
 </html>
