@@ -2,20 +2,30 @@
 <html>
   <head>
     <link rel="stylesheet" href="/stylesheets/style.css" />
-    <title><%= title %></title>
   </head>
   <body>
-    <h1><%= title %></h1>
+    <header>
+      <img
+        src="https://freepngimg.com/download/vote/24870-3-vote-transparent-image.png"
+      />
+    </header>
     <a href="/votings/new" class="create-vote">+투표</a>
     <a href="/votings" class="my-vote">내 투표보기</a>
-    <% voteInformation.forEach(vote => { %>
-    <a href="/votings/:id" class="vote-element-<%= vote.inProgress %>">
-      <div class="vote-title"><%= vote.title %></div>
-      <div class="vote-host"><%= vote.host %></div>
-      <div class="vote-expiration"><%= vote.expiration%></div>
-      <div class="vote-created_at"><%= vote.created_at %></div>
-    </a>
-    <% }); %>
+    <% if (voteInformation.length) { %>
+    <div>
+      <% voteInformation.forEach(vote => { %>
+      <a
+        href="/votings/<%= vote._id %>"
+        class="vote-element-<%= vote.inProgress %>"
+      >
+        <div class="vote-title"><%= vote.title %></div>
+        <div class="vote-host"><%= vote.host %></div>
+        <div class="vote-expiration">만료: <%= vote.expiration%></div>
+        <div class="vote-created_at">생성일: <%= vote.created_at %></div>
+      </a>
+      <% }); %>
+    </div>
+    <% } %>
   </body>
   <script>
     const expiredVote = document.querySelectorAll('.vote-element-false');

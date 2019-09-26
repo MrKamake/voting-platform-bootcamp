@@ -1,12 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  
-</body>
+<html>
+  <head>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <title>Vote</title>
+  </head>
+  <body>
+    <h1>Vote</h1>
+    <a href="/" class="main-path">메인으로</a>
+    <a href="/votings/new" class="create-vote">+투표</a>
+    <a href="/votings" class="my-vote">내 투표보기</a>
+    <div class="vote-element-<%= selectedVoteDoc.inProgress %>">
+      <% if (selectedVoteDoc.inProgress) { %>
+      <div>투표 진행중..</div>
+      <% } else { %>
+      <div>투표 완료..</div>
+      <% } %>
+      <div class="vote-title">title: <%= selectedVoteDoc.title %></div>
+      <div class="vote-host"><%= selectedVoteDoc.host %></div>
+      <div class="vote-expiration">만료: <%= selectedVoteDoc.expiration%></div>
+      <div class="vote-created_at">
+        생성일: <%= selectedVoteDoc.created_at %>
+      </div>
+      <form action="/votings/<%= selectedVoteDoc._id %>" method="post">
+        <div class="vote-selection">
+          <% selectedVoteDoc.selections.forEach(selection => { %>
+          <input id="<%= selection.decription%>" type="radio" name="selection" value="<%= selection._id%>"/>
+          <label for="<%= selection.decription%>"><%= selection.description %></label>
+          <label for="<%= selection.decription%>"><%= selection.people.length %></label>
+          <% });%>
+        </div>
+        <div>
+          <input type="submit" value="Submit" />
+        </div>
+      </form>
+    </div>
+  </body>
 </html>

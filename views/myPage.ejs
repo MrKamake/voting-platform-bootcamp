@@ -11,10 +11,10 @@
     <h1>My page</h1>
     <a href="/votings/new" class="create-vote">+투표</a>
     <% myVotes.forEach(vote => { %>
-    <a href="/votings/:id" class="vote-element-<%= vote.inProgress %>">
+    <a href="/votings/<%= vote._id %>" class="vote-element-<%= vote.inProgress %>">
       <div class="vote-title"><%= vote.title %></div>
-      <div class="vote-expiration"><%= vote.expiration%></div>
-      <div class="vote-created_at"><%= vote.created_at %></div>
+      <div class="vote-expiration">만료: <%= vote.expiration%></div>
+      <div class="vote-created_at">생성일: <%= vote.created_at %></div>
     </a>
     <% }); %>
   </body>

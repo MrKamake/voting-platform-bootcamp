@@ -3,9 +3,9 @@ const router = express.Router();
 
 const passport = require('passport');
 
-const signup = require('./controllers/signup.controller');
-const votingController = require('./controllers/voting.controller');
 const authorization = require('./middlewares/authorization');
+const signup = require('./controllers/sign.controller');
+const votingController = require('./controllers/voting.controller');
 
 authorization.verifyUserData(passport);
 
@@ -56,17 +56,25 @@ router.get('/logout', (req, res, next) => {
 router.get(
   '/votings',
   authorization.isAuthenticated,
-  votingController.getMyVote
+  votingController.getMyVotes
 );
 
 router.get('/votings/new', authorization.isAuthenticated, (req, res, next) => {
   res.render('new');
 });
 
-router.post('/votings/new', votingController.createVote);
+router.post('/votings/new', authorization.isAuthenticated, votingController.createVote);
 
-router.get('/votings/:id', (req, res, next) => {
-  res.render('vote');
-});
+router.get(
+  '/votings/:id',
+  authorization.isAuthenticated,
+  votingController.getOneVote
+);
+
+router.post(
+  '/votings/:id',
+  authorization.isAuthenticated,
+  votingController.update
+);
 
 module.exports = router;
