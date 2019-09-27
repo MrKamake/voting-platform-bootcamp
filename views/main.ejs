@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/main.css" />
   </head>
   <body>
     <header>
-      <img
-        src="https://freepngimg.com/download/vote/24870-3-vote-transparent-image.png"
-      />
+      <div class="main-logo">VOTE VOTE</div>
+      <div class="user-box">
+        <a href="/votings/new" class="create-vote">+</a>
+        <a href="/votings" class="my-vote">My page</a>
+        <a href="/logout" class="logout">logout</a>
+      </div>
     </header>
-    <a href="/login" class="logout">logout</a>
-    <a href="/votings/new" class="create-vote">+투표</a>
-    <a href="/votings" class="my-vote">내 투표보기</a>
     <% if (voteInformation.length) { %>
-    <div>
+    <div class="section-body">
       <% voteInformation.forEach(vote => { %>
       <a
         href="/votings/<%= vote._id %>"
-        class="vote-element-<%= vote.inProgress %>"
+        class="vote-element progress-<%= vote.inProgress %>"
       >
         <div class="vote-title"><%= vote.title %></div>
-        <div class="vote-host"><%= vote.host %></div>
-        <div class="vote-expiration">만료: <%= vote.expiration%></div>
-        <div class="vote-created_at">생성일: <%= vote.created_at %></div>
+        <div class="vote-host"><span><%= vote.host %></span></div>
+        <div class="vote-expiration">
+          <span>expiration - <%= vote.expiration%></span>
+        </div>
       </a>
       <% }); %>
     </div>

@@ -12,10 +12,6 @@ const voteSchema = new mongoose.Schema({
     type: objectId,
     ref: 'User'
   },
-  created_at: {
-    type: Date,
-    default: Date.now
-  },
   expiration: {
     type: Date,
     required: true

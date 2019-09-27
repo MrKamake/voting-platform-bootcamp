@@ -9,6 +9,15 @@ exports.isAuthenticated = (req, res, next) => {
   res.status(301).redirect('/login');
 };
 
+exports.extendSession = (req, res, next) => {
+  if (!req.body.remember_me) {
+    return next();
+  }
+  res.cookie('remember_me', _, { path: '/', maxAge: 604800000 });
+
+  return next();
+};
+
 exports.verifyUserData = passport => {
   passport.use(
     new LocalStrategy(
@@ -30,7 +39,6 @@ exports.verifyUserData = passport => {
         } catch (err) {
           done(err);
         }
-
         done(null, 123);
       }
     )

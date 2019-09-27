@@ -8,11 +8,19 @@
     <title>New vote</title>
   </head>
   <body>
+    <header>
+      <div class="main-logo">VOTE VOTE</div>
+      <div class="user-box">
+        <a href="/votings/new" class="create-vote">+</a>
+        <a href="/votings" class="my-vote">My page</a>
+        <a href="/logout" class="logout">logout</a>
+      </div>
+    </header>
     <section class="create">
       <h1>New vote</h1>
       <form action="/votings/new" method="post">
         <input type="text" name="title" placeholder="title" />
-        <input type="datetime-local" name="expiration" />
+        <input type="datetime-local" name="expiration" class="expired-date" />
         <div id="container">
           <div>
             <input type="text" name="selections" />
@@ -54,6 +62,10 @@
 
           document.getElementById('container').appendChild(div);
         });
+        const $expiredDate = document.querySelector(".expired-date");
+        const today = new Date().toISOString().slice(0, 16);
+        $expiredDate.setAttribute('value', today);
+        $expiredDate.setAttribute('min', today);
       });
     </script>
 </html>

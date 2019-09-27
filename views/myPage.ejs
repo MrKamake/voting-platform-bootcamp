@@ -8,6 +8,14 @@
     <title>My Page</title>
   </head>
   <body>
+    <header>
+      <div class="main-logo">VOTE VOTE</div>
+      <div class="user-box">
+        <a href="/votings/new" class="create-vote">+</a>
+        <a href="/votings" class="my-vote">My page</a>
+        <a href="/logout" class="logout">logout</a>
+      </div>
+    </header>
     <h1>My page</h1>
     <a href="/votings/new" class="create-vote">+투표</a>
     <% myVotes.forEach(vote => { %>

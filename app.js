@@ -33,7 +33,6 @@ db.once('open', () => {
 
 const app = express();
 
-// app.use(methodOverride('X-HTTP-Method-Override'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
