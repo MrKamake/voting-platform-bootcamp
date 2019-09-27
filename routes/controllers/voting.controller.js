@@ -63,7 +63,6 @@ exports.getOneVote = async (req, res, next) => {
         }
       });
     });
-
     const descriptionOfResult = selectedVoteDoc.selections.filter(selection => {
       if (selection.people.length === numberOfResult) {
         return selection;

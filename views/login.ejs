@@ -4,28 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/login.css" />
     <title>Document</title>
   </head>
   <body>
     <% if (locals.message) { %>
     <div><%= message %></div>
     <% } %>
-    <form action="/login" method="post">
-      <div>
-        <label>Email:</label>
-        <input type="text" name="email" placeholder="email" />
-      </div>
-      <div>
-        <label>Password:</label>
-        <input type="password" name="password" placeholder="password" />
-      </div>
-      <div>
-        <input type="submit" value="로그인하기" />
-      </div>
-      <div>
-        <a href="/signup">회원가입하기</a>
-      </div>
-    </form>
+    <div class="login-box">
+      <form action="/login" method="post" class="login-form">
+        <div class="login-logo">
+          <img
+            src="https://image.freepik.com/free-icon/lock-circle_318-9883.jpg"
+          />
+        </div>
+        <div class="email-box">
+          <input type="text" name="email" placeholder="email" />
+        </div>
+        <div class="password-box">
+          <input type="password" name="password" placeholder="password" />
+        </div>
+        <div class="button-box">
+          <a href="/signup" class="signup-button">Sign up</a>
+          <input type="submit" value="Login" class="login-button" />
+        </div>
+      </form>
+    </div>
   </body>
 </html>
