@@ -37,8 +37,11 @@ exports.getMyVotes = async (req, res, next) => {
         const expiration = new Date(vote.expiration);
         const nowDate = new Date();
         const inProgress = Boolean(expiration - nowDate > 0);
+        const formatDate = formatRelative(vote.expiration, new Date());
 
         voteDoc.inProgress = inProgress;
+        voteDoc.expiration = formatDate;
+        
         return voteDoc;
       })
     );

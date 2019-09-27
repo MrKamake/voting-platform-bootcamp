@@ -5,14 +5,13 @@
   </head>
   <body>
     <header>
-      <div class="main-logo">VOTE VOTE</div>
+      <a href="/" class="main-logo">VOTE VOTE</a>
       <div class="user-box">
-        <a href="/votings/new" class="create-vote">+</a>
-        <a href="/votings" class="my-vote">My page</a>
-        <a href="/logout" class="logout">logout</a>
+        <a href="/votings/new" class="create-vote">/ + /</a>
+        <a href="/votings" class="my-vote">/ My page /</a>
+        <a href="/logout" class="logout">/ logout /</a>
       </div>
     </header>
-    <% if (voteInformation.length) { %>
     <div class="section-body">
       <% voteInformation.forEach(vote => { %>
       <a
@@ -27,6 +26,5 @@
       </a>
       <% }); %>
     </div>
-    <% } %>
   </body>
 </html>

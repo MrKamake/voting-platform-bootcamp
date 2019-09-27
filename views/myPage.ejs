@@ -9,21 +9,27 @@
   </head>
   <body>
     <header>
-      <div class="main-logo">VOTE VOTE</div>
+      <a href="/" class="main-logo">VOTE VOTE</a>
       <div class="user-box">
-        <a href="/votings/new" class="create-vote">+</a>
-        <a href="/votings" class="my-vote">My page</a>
-        <a href="/logout" class="logout">logout</a>
+        <a href="/votings/new" class="create-vote">/ + /</a>
+        <a href="/votings" class="my-vote">/ My page /</a>
+        <a href="/logout" class="logout">/ logout /</a>
       </div>
     </header>
-    <h1>My page</h1>
-    <a href="/votings/new" class="create-vote">+투표</a>
-    <% myVotes.forEach(vote => { %>
-    <a href="/votings/<%= vote._id %>" class="vote-element-<%= vote.inProgress %>">
-      <div class="vote-title"><%= vote.title %></div>
-      <div class="vote-expiration">만료: <%= vote.expiration%></div>
-      <div class="vote-created_at">생성일: <%= vote.created_at %></div>
-    </a>
-    <% }); %>
+    <div class="page-title">My page</div>
+        <div class="section-body">
+      <% myVotes.forEach(vote => { %>
+      <a
+        href="/votings/<%= vote._id %>"
+        class="vote-element progress-<%= vote.inProgress %>"
+      >
+        <div class="vote-title"><%= vote.title %></div>
+        <div class="vote-expiration">
+          <span>expiration - <%= vote.expiration%></span>
+        </div>
+      </a>
+      <% }); %>
+    </div>
+
   </body>
 </html>
