@@ -21,7 +21,7 @@ exports.getAll = async (req, res, next) => {
         return voteDoc;
       })
     );
-    res.render('main', { voteInformation, title: 'Voting Platform main page' });
+    res.render('main', { voteInformation });
   } catch (err) {
     next(err);
   }
@@ -41,7 +41,7 @@ exports.getMyVotes = async (req, res, next) => {
 
         voteDoc.inProgress = inProgress;
         voteDoc.expiration = formatDate;
-        
+
         return voteDoc;
       })
     );
@@ -59,15 +59,10 @@ exports.getOneVote = async (req, res, next) => {
     const expiration = new Date(selectedVoteDoc.expiration);
     const nowDate = new Date();
     const inProgress = Boolean(expiration - nowDate > 0);
-    // const formatDate = formatRelative(
-    //   parseISO(selectedVoteDoc.expiration),
-    //   new Date()
-    // );
     let hasVoted = false;
     let numberOfResult = 0;
 
     selectedVoteDoc.selections.forEach(selection => {
-      console.log(selection);
       numberOfResult = Math.max(selection.people.length, numberOfResult);
       selection.people.forEach(person => {
         if (person === String(req.user._id)) {
@@ -86,7 +81,6 @@ exports.getOneVote = async (req, res, next) => {
     selectedVoteDoc.inProgress = inProgress;
     selectedVoteDoc.descriptionOfResult = descriptionOfResult;
     selectedVoteDoc.hasVoted = hasVoted;
-    // selectedVoteDoc.expiration = formatDate;
 
     res.render('vote', { selectedVoteDoc, user: String(req.user._id) });
   } catch (err) {

@@ -4,7 +4,6 @@ const objectId = mongoose.Types.ObjectId;
 const voteSchema = new mongoose.Schema({
   title: {
     type: String,
-    unique: true,
     required: true,
     trim: true
   },

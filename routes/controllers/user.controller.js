@@ -29,11 +29,14 @@ exports.createUser = async (req, res, next) => {
   try {
     const { email, name, password, confirmPassword } = req.body;
 
+    if (password !== confirmPassword) {
+      next(err);
+    }
+    
     const newUserData = {
       email,
       name: name,
-      password,
-      confirmPassword
+      password
     };
     await new User(newUserData).save();
 
